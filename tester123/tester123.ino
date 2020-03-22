@@ -1,5 +1,5 @@
-const int left = 28;
-const int right = A4;
+const int left = 3;
+const int right = 4;
 const int up = A5;
 const int down = A3;
 const int Z = 47;
@@ -8,6 +8,7 @@ const int A = 49;
 const int B = 48;
 const int Y = 46;
 const int LR = 45;
+
 const int RTilt = 43;
 const int LTilt = 42;
 const int DTilt = 11;
@@ -21,6 +22,12 @@ void button40(int direct, int wait = 40) {
   digitalWrite(direct, LOW);
   digitalWrite(direct, LOW);
   delay(40);
+}
+
+void analog40(int button, int wait = 40, int pwm = 255) {
+  analogWrite(button, pwm);
+  delay(wait);
+  analogWrite(button, 0);
 }
 
 void button40v2(int b1, int b2, int wait = 40) {
@@ -119,7 +126,7 @@ void smash(String key) {
  
     int jump = key[3];    // key[3]
     
-    int attack = key[4];  //
+    int attack = key[4];  // key[4]
     int chargeTime = 0;   // key[5]
     int pummels = 0;      // key[6]
     int thrw = 0;         // key[7]
@@ -298,22 +305,6 @@ void smash(String key) {
        X | attack   move      wait     jump    
        X | move     attack    wait     jump    
        X | attack   move
-    int movement = 0;     // key[0]
-    // int intensity = 0;
-
-    int movement2 = 0;    // key[1]
-    // int intensity2 = 0;
-
-    int waitTime = 0;     // key[2]
-
-    int jump = key[3];    // key[3]
-    
-    int attack = key[4];  //
-    int chargeTime = 0;   // key[5]
-    int pummels = 0;      // key[6]
-    int thrw = 0;         // key[7]
-    int order = key[9];   // key[8]
-
     */
 
     switch (key[8]) {
@@ -347,13 +338,13 @@ void smash(String key) {
 
 void aerialRising2(int movement, char jump, int wait, int attack,int chargeTime,int pummels, int thrw, int movement2) {
   // TODO: analogWrite w/ Intensity of movements and jumps
-  if (movement != 0) digitalWrite(movement, HIGH);
+  if (movement) digitalWrite(movement, HIGH);
   if (jump == '1') digitalWrite(Y, HIGH);
   delay(wait);
-  if (movement != 0) digitalWrite(movement, LOW);
+  if (movement) digitalWrite(movement, LOW);
   if (jump == '1') digitalWrite(Y, LOW);
   punch(attack, chargeTime, pummels, thrw);
-  button40(movement2, 100);
+  if (movement2) button40(movement2, 100);
 }
 
 
@@ -452,6 +443,17 @@ void backOut() {
   button40(up);
   button40(A, 750);
 }
+
+void hardBreak() {
+  backOut();
+  button40(B);
+  button40(B);
+  button40(B);
+  delay(4000);
+  button40(B);
+  button40(B);
+  button40(B);
+}
 void setup() {
   Serial.begin(9600);
   pinMode(start, OUTPUT);
@@ -463,24 +465,50 @@ void setup() {
   pinMode(Y, OUTPUT);
   pinMode(Z, OUTPUT);
   pinMode(LR, OUTPUT);
-
-  button40(A);
-  button40(A);
-  reset();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  if (Serial.available() > 0) {
-    String key = Serial.readString();
-    
-    if (key == "reset"){
-       button40(A);
-       button40(A);
-       reset();
-    } else {
-      smash(key);
+}
+
+void serialEvent() {
+    if (Serial.available() > 0) {
+      String key = Serial.readString();
       Serial.println(key);
-    }
-  }
+      if (key == "w") {
+        button40(A);
+        button40(A);
+      } else if (key == "reset") {
+        reset();
+      } else if (key == "a") {
+        button40(A);
+      } else if (key == "b") {
+        button40(B);
+      } else if (key == "u") {
+        button40(up);
+      } else if (key == "d400") {
+        button40(down, 400);
+      } else if (key == "l400") {
+        button40(left, 400);
+      } else if (key == "r400") {
+        button40(right, 400);
+      } else if (key == "u400") {
+        button40(up, 400);
+      } else if (key == "u") {
+        button40(up);
+      } else if (key == "d") {
+        button40(down);
+      } else if (key == "l") {
+        button40(left);
+      } else if (key == "r") {
+        button40(right);
+      } else if (key == "test") {
+        button40(left, 5000);
+      }else if (key == "menu") {
+        button40(start);
+      } else if (key == "hb") {
+        backOut();
+      } else {
+        smash(key);
+      }
+    } 
 }
