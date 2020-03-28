@@ -1,19 +1,26 @@
-const int left = 3;
-const int right = 4;
-const int up = A5;
-const int down = A3;
-const int Z = 47;
-const int start = 44;
-const int A = 49;
-const int B = 48;
-const int Y = 46;
-const int LR = 45;
+const int hardLeft = 26;
+const int mediumLeft = 7;
+const int easyLeft = 6;
+const int hardRight = 22;
+const int mediumRight = 4;
+const int easyRight = 5;
+const int up = 30;
+const int down = 28;
+const int L = 24;
+// 35 Unassigned
+// 33 Unassigned
+const int R = 25;
+const int Z = 23;
 
-const int RTilt = 43;
-const int LTilt = 42;
-const int DTilt = 11;
-const int UTilt = 12;
-int counter = 0;
+const int cLeft = 36;
+const int cRight = 38;
+const int cUp = 39;
+const int cDown  = 37;
+const int B = 29;
+const int A = 27;
+const int X = 31;
+const int Y = 35; // short
+const int start = 33;
 
 void button40(int direct, int wait = 40) {
   digitalWrite(direct, HIGH);
@@ -24,10 +31,71 @@ void button40(int direct, int wait = 40) {
   delay(40);
 }
 
-void analog40(int button, int wait = 40, int pwm = 255) {
-  analogWrite(button, pwm);
-  delay(wait);
-  analogWrite(button, 0);
+void downThrow() {
+  digitalWrite(down, HIGH);
+  digitalWrite(Z, HIGH);
+  delay(40);
+  digitalWrite(Z, LOW);
+  digitalWrite(down, LOW);
+  delay(40);
+  digitalWrite(down, HIGH);
+  delay(40);
+  digitalWrite(down, LOW);
+
+}
+
+void fullHop(int drift = false) {
+  digitalWrite(Y, HIGH);
+  if (drift) {
+    digitalWrite(drift, HIGH);
+    delay(25);
+    digitalWrite(drift, LOW);
+  } else {
+    delay(25);
+  }
+
+  if (drift) {
+    digitalWrite(drift, HIGH);
+    delay(195);
+    button40(Z);
+    digitalWrite(drift, LOW);
+    delay(160);
+  } else {
+    delay(345);
+  }
+  digitalWrite(Y, LOW);
+  downThrow();
+}
+void banana() {
+  digitalWrite(down, HIGH);
+  digitalWrite(B, HIGH);
+  delay(300);
+  digitalWrite(down, LOW);
+  digitalWrite(B, LOW);
+  delay(350);
+}
+
+
+void infinite() {
+  button40(mediumRight, 865);
+  delay(300);
+  for (int x = 0; x < 3; x++) {
+    banana();
+    digitalWrite(40, HIGH);
+    delay(20);
+    digitalWrite(40, LOW);
+    delay(50);
+    if (x % 2 == 0) {
+      fullHop(mediumLeft);
+    } else {
+      fullHop(mediumRight);
+    }
+    delay(200);
+    digitalWrite(down, HIGH);
+    delay(40);
+    digitalWrite(down, LOW);
+    delay(100);
+  }
 }
 
 void button40v2(int b1, int b2, int wait = 40) {
@@ -52,17 +120,21 @@ void grab(int pummels,int thrw) {
 void dashDance(int ammount) {
   int u = 0;
   while(u < ammount) {
-    button40(left, 20);
-    button40(right, 20);
+    button40(mediumLeft, 20);
+    button40(mediumRight, 20);
     u = u + 1;
   }
 }
 
 void reset() {
-  digitalWrite(LR, HIGH);
+  digitalWrite(L, HIGH);
+  digitalWrite(R, HIGH);
+
   digitalWrite(A, HIGH);
   delay(100);
-  digitalWrite(LR, LOW);
+  digitalWrite(L, LOW);
+  digitalWrite(R, LOW);
+
   digitalWrite(A, LOW);
   delay(100);
 }
@@ -85,9 +157,9 @@ void smashAttack(int direct, int wait = 200) {
 
 void PG() {
   button40(down);
-  button40(left);
+  button40(mediumLeft);
   button40(down);
-  button40(right);
+  button40(mediumRight);
   digitalWrite(B, HIGH);
   delay(100);
   digitalWrite(B, LOW);
@@ -95,9 +167,9 @@ void PG() {
 
 void BW() {
   button40(down, 25);
-  button40(right, 25);
+  button40(mediumRight, 25);
   button40(down, 25);
-  button40(right, 25);
+  button40(mediumRight, 25);
   digitalWrite(B, HIGH);
   delay(100);
   digitalWrite(B, LOW);
@@ -124,7 +196,7 @@ void smash(String key) {
     
     int waitTime = 0;     // key[2]
  
-    int jump = key[3];    // key[3]
+    char jump = key[3];    // key[3] 0: none, 1:short, 2:shortFF, 3:full, 4:fullFF
     
     int attack = key[4];  // key[4]
     int chargeTime = 0;   // key[5]
@@ -140,10 +212,10 @@ void smash(String key) {
         // No movement
         break;
       case '1':
-        movement = left;
+        movement = mediumLeft;
         break;
       case '2':
-        movement = right;
+        movement = mediumRight;
         break;
       case '3':
         movement = up;
@@ -162,10 +234,10 @@ void smash(String key) {
         // No movement
         break;
       case '1':
-        movement2 = left;
+        movement2 = hardLeft;
         break;
       case '2':
-        movement2 = right;
+        movement2 = hardRight;
         break;
       case '3':
         movement2 = up;
@@ -273,10 +345,10 @@ void smash(String key) {
         // No movement
         break;
       case '1':
-        thrw = left;
+        thrw = mediumLeft;
         break;
       case '2':
-        thrw = right;
+        thrw = mediumRight;
         break;
       case '3':
         thrw = up;
@@ -312,7 +384,7 @@ void smash(String key) {
         aerialRising2(movement, jump, waitTime, attack, chargeTime, pummels, thrw, movement2);
         break;
       case '1':
-        // aerialRising(jump, attack, wait, movement);
+         aerialRising(jump, attack, waitTime, movement);
         break;
       case '2':
         // jumpKick(jump, attack);
@@ -330,23 +402,61 @@ void smash(String key) {
         // soleJump(jump);
         break;
       case '7':
-        // aerial2(movement, jump, attack)
+        aerial2(movement, jump, attack);
       default:
         break;
     }
 }
 
-void aerialRising2(int movement, char jump, int wait, int attack,int chargeTime,int pummels, int thrw, int movement2) {
-  // TODO: analogWrite w/ Intensity of movements and jumps
-  if (movement) digitalWrite(movement, HIGH);
-  if (jump == '1') digitalWrite(Y, HIGH);
-  delay(wait);
-  if (movement) digitalWrite(movement, LOW);
-  if (jump == '1') digitalWrite(Y, LOW);
-  punch(attack, chargeTime, pummels, thrw);
-  if (movement2) button40(movement2, 100);
+void jumpHeight(char jump) {
+  if (jump == '1') {
+    digitalWrite(X, HIGH);
+    digitalWrite(Y, HIGH);
+  } else if (jump == '2') {
+    digitalWrite(X, HIGH);
+    digitalWrite(Y, HIGH);
+    // (SH frames / 2) * 16.667
+  } else if (jump == '3') {
+    digitalWrite(Y, HIGH);
+  } else if (jump == '4') {
+    digitalWrite(Y, HIGH);
+    // (FH frames / 2) * 16.667
+  }
+  delay(17);
+  digitalWrite(X, LOW);
+  digitalWrite(Y, LOW);
 }
 
+void aerialRising2(int movement, char jump, int wait, char attack,int chargeTime,int pummels, int thrw, int movement2) {
+   digitalWrite(hardRight, HIGH);
+  delay(20);
+  digitalWrite(hardRight, LOW);
+  if (jump != '0') jumpHeight(jump);
+  punch(attack, chargeTime, pummels, thrw);
+  digitalWrite(hardRight, LOW);
+  digitalWrite(Y, LOW);
+}
+
+void aerialRising(char jump, int attack, int wait, int movement) {
+  digitalWrite(Y, HIGH);
+  punch(attack,0 ,0 ,0);
+  delay(wait);
+  digitalWrite(movement, HIGH);
+  delay(100);
+  digitalWrite(movement, LOW);
+  digitalWrite(Y, LOW);
+
+}
+
+void aerial2(int movement, char jump, char attack) {
+  digitalWrite(hardRight, HIGH);
+  delay(20);
+  digitalWrite(hardRight, LOW);
+  digitalWrite(Y, HIGH);
+  punch(attack, 0, 0, 0);
+  digitalWrite(hardRight, LOW);
+  digitalWrite(Y, LOW);
+}
 
 void punch(char atk, int charge, int pummels, int thrw) {
   switch(atk) {
@@ -358,22 +468,22 @@ void punch(char atk, int charge, int pummels, int thrw) {
       button40(A);
       break;
     case '3':
-      button40(LTilt);
+      button40(cLeft);
       break;
     case '4':
-      button40(RTilt);
+      button40(cRight);
       break;
     case '5':
-      button40(UTilt);
+      button40(cUp);
       break;
     case '6':
-      button40(DTilt);
+      button40(cDown);
       break;
     case '7':
-      smashAttack(left ,charge);
+      smashAttack(mediumLeft ,charge);
       break;
     case '8':
-      smashAttack(right, charge);
+      smashAttack(mediumRight, charge);
       break;
     case '9':
       smashAttack(up,charge);
@@ -386,16 +496,16 @@ void punch(char atk, int charge, int pummels, int thrw) {
       break;
     case 'c':
       // sheild
-      button40(LR, charge);
+      button40(L, charge);
       break;
     case 'd':
       button40(B, charge);
       break;
     case 'e':
-      button40v2(B, left, charge);
+      button40v2(B, mediumLeft, charge);
       break;
     case 'f':
-      button40v2(B, right, charge);
+      button40v2(B, mediumRight, charge);
       break;
     case 'g':
       button40v2(B, up, charge);
@@ -404,19 +514,19 @@ void punch(char atk, int charge, int pummels, int thrw) {
       button40v2(B, down, charge);
       break;
     case 'i':
-      dashAttack(left, charge);
+      dashAttack(mediumLeft, charge);
       break;
     case 'j':
-      dashAttack(right, charge);
+      dashAttack(mediumRight, charge);
       break;
     case 'y':
-      button40v2(B, left, charge);
+      button40v2(B, mediumLeft, charge);
       button40v2(B, up, charge);
       button40v2(B, down, charge);
       button40(B, charge);
       break;
     case 'z':
-      button40v2(B, right, charge);
+      button40v2(B, mediumRight, charge);
       button40v2(B, up, charge);
       button40v2(B, down, charge);
       button40(B, charge);
@@ -459,13 +569,25 @@ void setup() {
   pinMode(start, OUTPUT);
   pinMode(up, OUTPUT);
   pinMode(down, OUTPUT);
-  pinMode(left, OUTPUT);
-  pinMode(right, OUTPUT);
+  pinMode(hardLeft, OUTPUT);
+  pinMode(mediumLeft, OUTPUT);
+  pinMode(easyLeft, OUTPUT);
+  pinMode(hardRight, OUTPUT);
+  pinMode(mediumRight, OUTPUT);
+  pinMode(easyRight, OUTPUT);
   pinMode(A, OUTPUT);
   pinMode(Y, OUTPUT);
   pinMode(Z, OUTPUT);
-  pinMode(LR, OUTPUT);
-}
+  pinMode(L, OUTPUT);
+  pinMode(R, OUTPUT);
+  pinMode(cUp, OUTPUT);
+  pinMode(cDown, OUTPUT);
+  pinMode(cLeft, OUTPUT);
+  pinMode(cRight, OUTPUT);
+  pinMode(50, OUTPUT);
+  digitalWrite(50, HIGH);
+   reset(); 
+ }
 
 void loop() {
 }
@@ -474,39 +596,57 @@ void serialEvent() {
     if (Serial.available() > 0) {
       String key = Serial.readString();
       Serial.println(key);
-      if (key == "w") {
+      if (key == "wake") {
         button40(A);
         button40(A);
       } else if (key == "reset") {
         reset();
+      } else if (key == "test") { 
+        button40(X);
+      }else if (key == "menu") {
+        button40(start);
+      } else if (key == "back") {
+        backOut();
       } else if (key == "a") {
         button40(A);
       } else if (key == "b") {
         button40(B);
-      } else if (key == "u") {
-        button40(up);
-      } else if (key == "d400") {
-        button40(down, 400);
-      } else if (key == "l400") {
-        button40(left, 400);
-      } else if (key == "r400") {
-        button40(right, 400);
-      } else if (key == "u400") {
-        button40(up, 400);
+      } else if (key == "y") {
+        button40(Y);
+      } else if (key == "xy") {
+        jumpHeight('2');
+      } else if (key == "cDown") {
+        button40(cDown);
+      } else if (key == "cUp") {
+        button40(cUp);
+      } else if (key == "cLeft") {
+        button40(cLeft);
+      } else if (key == "cRight") {
+        button40(cRight);
       } else if (key == "u") {
         button40(up);
       } else if (key == "d") {
         button40(down);
-      } else if (key == "l") {
-        button40(left);
-      } else if (key == "r") {
-        button40(right);
-      } else if (key == "test") {
-        button40(left, 5000);
-      }else if (key == "menu") {
-        button40(start);
-      } else if (key == "hb") {
-        backOut();
+      } else if (key == "d400") {
+        button40(down, 400);
+      } else if (key == "l400") {
+        button40(mediumLeft, 400);
+      } else if (key == "r400") {
+        button40(mediumRight, 400);
+      } else if (key == "u400") {
+        button40(up, 400);
+      } else if (key == "1l") {
+        button40(easyLeft, 1000);
+      } else if (key == "2l") {
+        button40(mediumLeft, 1000);
+      } else if (key == "3l") {
+        button40(hardLeft, 1000);
+      } else if (key == "1r") { 
+        button40(easyRight, 1000);
+      } else if (key == "2r") {
+        button40(mediumRight, 1000);
+      } else if (key == "3r") { 
+        button40(hardRight, 1000);
       } else {
         smash(key);
       }
