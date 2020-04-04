@@ -1,36 +1,49 @@
-const int hardLeft = 26;
-const int mediumLeft = 7;
-const int easyLeft = 6;
-const int hardRight = 22;
-const int mediumRight = 4;
-const int easyRight = 5;
-const int up = 30;
-const int down = 28;
-const int L = 24;
-// 35 Unassigned
-// 33 Unassigned
-const int R = 25;
-const int Z = 23;
+const int mediumLeft = 4;
+const int easyLeft = 5;
+const int easyRight = 6;
+const int mediumRight = 7;
 
-const int cLeft = 36;
-const int cRight = 38;
-const int cUp = 39;
-const int cDown  = 37;
-const int B = 29;
-const int A = 27;
-const int X = 31;
-const int Y = 35; // short
-const int start = 33;
+const int start = 22; // a
+const int L = 24;     // a
+const int Z = 26;     // a
+const int B = 28;     // a
+const int X = 30;     // a
+const int A = 32;  // a
+const int Y = 34;  // a
+const int cDown = 36;  // a
+const int cUp = 38;    // a
+const int hardRight = 40;  // a
+const int R = 42;    // a
+const int hardLeft = 44;   // a
+const int down = 46; // a
+// 48;
+const int up = 49; //a
+const int cLeft = 50;   // a
+// 51;
+const int cRight = 52; // a
 
 void button40(int direct, int wait = 40) {
   digitalWrite(direct, HIGH);
   delay(wait);
   digitalWrite(direct, LOW);
-  digitalWrite(direct, LOW);
-  digitalWrite(direct, LOW);
-  delay(40);
 }
 
+void button40v2(int b1, int b2, int wait = 40) {
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, HIGH);
+  delay(wait);
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, LOW);
+}
+
+void infiniteJump(int j, int d, int wait = 40) {
+  digitalWrite(j, HIGH);
+  delay(40);
+  digitalWrite(d, HIGH);
+  delay(wait);
+  digitalWrite(j, LOW);
+  digitalWrite(d, LOW);
+}
 void downThrow() {
   digitalWrite(down, HIGH);
   digitalWrite(Z, HIGH);
@@ -43,6 +56,8 @@ void downThrow() {
   digitalWrite(down, LOW);
 
 }
+
+
 
 void fullHop(int drift = false) {
   digitalWrite(Y, HIGH);
@@ -69,47 +84,91 @@ void fullHop(int drift = false) {
 void banana() {
   digitalWrite(down, HIGH);
   digitalWrite(B, HIGH);
-  delay(300);
+  delay(600);
   digitalWrite(down, LOW);
   digitalWrite(B, LOW);
-  delay(350);
-}
-
-
-void infinite() {
-  button40(mediumRight, 865);
-  delay(300);
-  for (int x = 0; x < 3; x++) {
-    banana();
-    digitalWrite(40, HIGH);
-    delay(20);
-    digitalWrite(40, LOW);
-    delay(50);
-    if (x % 2 == 0) {
-      fullHop(mediumLeft);
-    } else {
-      fullHop(mediumRight);
-    }
-    delay(200);
-    digitalWrite(down, HIGH);
-    delay(40);
-    digitalWrite(down, LOW);
-    delay(100);
-  }
-}
-
-void button40v2(int b1, int b2, int wait = 40) {
-  digitalWrite(b1, HIGH);
-  digitalWrite(b2, HIGH);
-  delay(wait);
-  digitalWrite(b1, LOW);
-  digitalWrite(b2, LOW);
   delay(100);
 }
 
-void grab(int pummels,int thrw) {
+void infinite() {
+  reset();
+  button40(hardRight, 865);
+  delay(300);
+  banana();
+  for(int w = 0; w < 50;w++) {
+   infiniteJump(Y, hardLeft, 100);
+   delay(120);
+   button40(Z);
+   infiniteJump(down, A, 100);
+   delay(300);
+   downBReverseL();
+   delay(700);
+   infiniteJump(Y, hardRight, 100);
+   delay(60);
+   button40(Z);
+   infiniteJump(down, A, 100);
+   delay(300);
+   downBReverseR();
+   delay(650);  
+  }
+}
+
+void downBReverseL() {
+  digitalWrite(mediumLeft, HIGH);
+  delay(50);
+  digitalWrite(mediumLeft, LOW);
+  digitalWrite(down, HIGH);
+  delay(75);
+  digitalWrite(B, HIGH);
+  delay(50);
+  digitalWrite(down, LOW);
+  digitalWrite(B, LOW);
+}
+
+void downBReverseR() {
+  digitalWrite(mediumRight, HIGH);
+  delay(50);
+  digitalWrite(mediumRight, LOW);
+  digitalWrite(down, HIGH);
+  delay(75);
+  digitalWrite(B, HIGH);
+  delay(50);
+  digitalWrite(down, LOW);
+  digitalWrite(B, LOW);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void grab(int pummels, int thrw) {
   button40(Z, 20);
-  for(int i = 0; i < pummels; i++) {
+  for (int i = 0; i < pummels; i++) {
     button40(Z, 20);
   }
   if (thrw) {
@@ -119,7 +178,7 @@ void grab(int pummels,int thrw) {
 
 void dashDance(int ammount) {
   int u = 0;
-  while(u < ammount) {
+  while (u < ammount) {
     button40(mediumLeft, 20);
     button40(mediumRight, 20);
     u = u + 1;
@@ -139,7 +198,7 @@ void reset() {
   delay(100);
 }
 
-void dashAttack(int direct,int wait = 150) {
+void dashAttack(int direct, int wait = 150) {
   digitalWrite(direct, HIGH);
   delay(wait);
   button40(A);
@@ -185,250 +244,252 @@ void powerDunk() {
 }
 
 void smash(String key) {
-    /////// vars //////////
+  /////// vars //////////
 
-    int movement = 0;     // key[0]
-    // int intensity = 0;
+  int movement = 0;     // key[0]
+  // int intensity = 0;
 
-    int movement2 = 0;    // key[1]
-    // int intensity2 = 0;
-    // int waitTime2 = 0;
-    
-    int waitTime = 0;     // key[2]
- 
-    char jump = key[3];    // key[3] 0: none, 1:short, 2:shortFF, 3:full, 4:fullFF
-    
-    int attack = key[4];  // key[4]
-    int chargeTime = 0;   // key[5]
-    int pummels = 0;      // key[6]
-    int thrw = 0;         // key[7]
-    int order = key[9];   // key[8]
+  int movement2 = 0;    // key[1]
+  // int intensity2 = 0;
+  // int waitTime2 = 0;
 
-    ///////////////////////
-    
-    /* Movement */    
-    switch (key[0]) {
-      case '0':
-        // No movement
-        break;
-      case '1':
-        movement = mediumLeft;
-        break;
-      case '2':
-        movement = mediumRight;
-        break;
-      case '3':
-        movement = up;
-        break;
-      case '4':
-        movement = down;
-        break;
-      default:
-        break;
-    }
+  int waitTime = 0;     // key[2]
 
-    
-    /* Second Movement */    
-    switch (key[1]) {
-      case '0':
-        // No movement
-        break;
-      case '1':
-        movement2 = hardLeft;
-        break;
-      case '2':
-        movement2 = hardRight;
-        break;
-      case '3':
-        movement2 = up;
-        break;
-      case '4':
-        movement2 = down;
-        break;
-      default:
-        break;
-    }
+  char jump = key[3];    // key[3] 0: none, 1:short, 2:shortFF, 3:full, 4:fullFF
 
-    /* Wait Time */
-    switch (key[2]) {
-      case '0':
-        waitTime = 0;   // 0
-        break;
-      case '1':
-        waitTime = 17;  // 1
-        break;
-      case '2':
-        waitTime = 34;  // 2
-        break;
-      case '3':
-        waitTime = 51;  // 3
-        break;
-      case '4':
-        waitTime = 85;  // 5
-        break;
-      case '5':
-        waitTime = 136; // 8
-        break;
-      case '6':
-        waitTime = 221; // 13
-        break;
-      case '7':
-        waitTime = 357; // 21
-        break;
-      case '8':
-        waitTime = 578; // 34
-        break;
-      case '9':
-        waitTime = 935; // 55
-        break;
-      default:
-        break;
-    }
+  int attack = key[4];  // key[4]
+  int chargeTime = 0;   // key[5]
+  int pummels = 0;      // key[6]
+  int thrw = 0;         // key[7]
+  int order = key[9];   // key[8]
 
-    /* Charge Time 1 */
-    switch (key[5]) {
-      case '0':
-        chargeTime = 0;   // 0
-        break;
-      case '1':
-        chargeTime = 17;  // 1
-        break;
-      case '2':
-        chargeTime = 34;  // 2
-        break;
-      case '3':
-        chargeTime = 51;  // 3
-        break;
-      case '4':
-        chargeTime = 85;  // 5
-        break;
-      case '5':
-        chargeTime = 136; // 8
-        break;
-      case '6':
-        chargeTime = 221; // 13
-        break;
-      case '7':
-        chargeTime = 357; // 21
-        break;
-      case '8':
-        chargeTime = 578; // 34
-        break;
-      case '9':
-        chargeTime = 935; // 55
-        break;
-      default:
-        break;
-    }
+  ///////////////////////
 
-    /* Pummel(s) */
-    switch (key[6]) {
-      case '0':
-        pummels = 0;
-        break;
-      case '1':
-        pummels = 1;
-        break;
-      case '2':
-        pummels = 2;
-        break;
-      case '3':
-        pummels = 3;
-        break;
-      default:
-        break;
-    }
+  /* Movement */
+  switch (key[0]) {
+    case '0':
+      // No movement
+      break;
+    case '1':
+      movement = mediumLeft;
+      break;
+    case '2':
+      movement = mediumRight;
+      break;
+    case '3':
+      movement = up;
+      break;
+    case '4':
+      movement = down;
+      break;
+    default:
+      break;
+  }
 
-    /* Throw Direction */
-    switch (key[7]) {
-      case '0':
-        // No movement
-        break;
-      case '1':
-        thrw = mediumLeft;
-        break;
-      case '2':
-        thrw = mediumRight;
-        break;
-      case '3':
-        thrw = up;
-        break;
-      case '4':
-        thrw = down;
-        break;
-      default:
-        break;
-    }
-   
-    
-    /*   
-       Order
-       0 | move     jump      wait     attack     move2
-       1 | jump     attack    wait     move            
-       2 | jump     attack
-       3 | move     jump                               
-       4 | move
-       5 | attack
-       6 | jump
-   
-       Options Deemed Unworthy
-       X | jump     move      wait     attack     move2
-       X | attack   jump      wait     move    
-       X | attack   move      wait     jump    
-       X | move     attack    wait     jump    
-       X | attack   move
-    */
 
-    switch (key[8]) {
-      case '0':
-        aerialRising2(movement, jump, waitTime, attack, chargeTime, pummels, thrw, movement2);
-        break;
-      case '1':
-         aerialRising(jump, attack, waitTime, movement);
-        break;
-      case '2':
-        // jumpKick(jump, attack);
-        break;
-      case '3':
-        // ledgeTrap(movement, jump);
-        break;
-      case '4':
-        // soleMovement(movement);
-        break;
-      case '5':
-        // soleAttack(attack);
-        break;
-      case '6':
-        // soleJump(jump);
-        break;
-      case '7':
-        aerial2(movement, jump, attack);
-      default:
-        break;
-    }
+  /* Second Movement */
+  switch (key[1]) {
+    case '0':
+      // No movement
+      break;
+    case '1':
+      movement2 = hardLeft;
+      break;
+    case '2':
+      movement2 = hardRight;
+      break;
+    case '3':
+      movement2 = up;
+      break;
+    case '4':
+      movement2 = down;
+      break;
+    default:
+      break;
+  }
+
+  /* Wait Time */
+  switch (key[2]) {
+    case '0':
+      waitTime = 0;   // 0
+      break;
+    case '1':
+      waitTime = 17;  // 1
+      break;
+    case '2':
+      waitTime = 34;  // 2
+      break;
+    case '3':
+      waitTime = 51;  // 3
+      break;
+    case '4':
+      waitTime = 85;  // 5
+      break;
+    case '5':
+      waitTime = 136; // 8
+      break;
+    case '6':
+      waitTime = 221; // 13
+      break;
+    case '7':
+      waitTime = 357; // 21
+      break;
+    case '8':
+      waitTime = 578; // 34
+      break;
+    case '9':
+      waitTime = 935; // 55
+      break;
+    default:
+      break;
+  }
+
+  /* Charge Time 1 */
+  switch (key[5]) {
+    case '0':
+      chargeTime = 0;   // 0
+      break;
+    case '1':
+      chargeTime = 17;  // 1
+      break;
+    case '2':
+      chargeTime = 34;  // 2
+      break;
+    case '3':
+      chargeTime = 51;  // 3
+      break;
+    case '4':
+      chargeTime = 85;  // 5
+      break;
+    case '5':
+      chargeTime = 136; // 8
+      break;
+    case '6':
+      chargeTime = 221; // 13
+      break;
+    case '7':
+      chargeTime = 357; // 21
+      break;
+    case '8':
+      chargeTime = 578; // 34
+      break;
+    case '9':
+      chargeTime = 935; // 55
+      break;
+    default:
+      break;
+  }
+
+  /* Pummel(s) */
+  switch (key[6]) {
+    case '0':
+      pummels = 0;
+      break;
+    case '1':
+      pummels = 1;
+      break;
+    case '2':
+      pummels = 2;
+      break;
+    case '3':
+      pummels = 3;
+      break;
+    default:
+      break;
+  }
+
+  /* Throw Direction */
+  switch (key[7]) {
+    case '0':
+      // No movement
+      break;
+    case '1':
+      thrw = mediumLeft;
+      break;
+    case '2':
+      thrw = mediumRight;
+      break;
+    case '3':
+      thrw = up;
+      break;
+    case '4':
+      thrw = down;
+      break;
+    default:
+      break;
+  }
+
+
+  /*
+     Order
+     0 | move     jump      wait     attack     move2
+     1 | jump     attack    wait     move
+     2 | jump     attack
+     3 | move     jump
+     4 | move
+     5 | attack
+     6 | jump
+
+     Options Deemed Unworthy
+     X | jump     move      wait     attack     move2
+     X | attack   jump      wait     move
+     X | attack   move      wait     jump
+     X | move     attack    wait     jump
+     X | attack   move
+  */
+
+  switch (key[8]) {
+    case '0':
+      aerialRising2(movement, jump, waitTime, attack, chargeTime, pummels, thrw, movement2);
+      break;
+    case '1':
+      aerialRising(jump, attack, waitTime, movement);
+      break;
+    case '2':
+      // jumpKick(jump, attack);
+      break;
+    case '3':
+      // ledgeTrap(movement, jump);
+      break;
+    case '4':
+      // soleMovement(movement);
+      break;
+    case '5':
+      // soleAttack(attack);
+      break;
+    case '6':
+      // soleJump(jump);
+      break;
+    case '7':
+      aerial2(movement, jump, attack);
+    default:
+      break;
+  }
 }
 
 void jumpHeight(char jump) {
   if (jump == '1') {
     digitalWrite(X, HIGH);
     digitalWrite(Y, HIGH);
+    delay(17);
+    digitalWrite(X, LOW);
+    digitalWrite(Y, LOW);
   } else if (jump == '2') {
     digitalWrite(X, HIGH);
     digitalWrite(Y, HIGH);
     // (SH frames / 2) * 16.667
   } else if (jump == '3') {
     digitalWrite(Y, HIGH);
+    delay(250);
+    digitalWrite(Y, LOW);
   } else if (jump == '4') {
     digitalWrite(Y, HIGH);
     // (FH frames / 2) * 16.667
   }
-  delay(17);
-  digitalWrite(X, LOW);
-  digitalWrite(Y, LOW);
 }
 
-void aerialRising2(int movement, char jump, int wait, char attack,int chargeTime,int pummels, int thrw, int movement2) {
-   digitalWrite(hardRight, HIGH);
+void aerialRising2(int movement, char jump, int wait, char attack, int chargeTime, int pummels, int thrw, int movement2) {
+  digitalWrite(hardRight, HIGH);
   delay(20);
   digitalWrite(hardRight, LOW);
   if (jump != '0') jumpHeight(jump);
@@ -439,7 +500,7 @@ void aerialRising2(int movement, char jump, int wait, char attack,int chargeTime
 
 void aerialRising(char jump, int attack, int wait, int movement) {
   digitalWrite(Y, HIGH);
-  punch(attack,0 ,0 ,0);
+  punch(attack, 0 , 0 , 0);
   delay(wait);
   digitalWrite(movement, HIGH);
   delay(100);
@@ -459,7 +520,7 @@ void aerial2(int movement, char jump, char attack) {
 }
 
 void punch(char atk, int charge, int pummels, int thrw) {
-  switch(atk) {
+  switch (atk) {
     case '1':
       button40(A);
       break;
@@ -480,13 +541,13 @@ void punch(char atk, int charge, int pummels, int thrw) {
       button40(cDown);
       break;
     case '7':
-      smashAttack(mediumLeft ,charge);
+      smashAttack(mediumLeft , charge);
       break;
     case '8':
       smashAttack(mediumRight, charge);
       break;
     case '9':
-      smashAttack(up,charge);
+      smashAttack(up, charge);
       break;
     case 'a':
       smashAttack(down, charge);
@@ -536,11 +597,92 @@ void punch(char atk, int charge, int pummels, int thrw) {
   }
 }
 void marthToTerry() {
-    back();
-    button40(down, 600);
-    button40(A);
-    button40(A);
+  back();
+  button40(down, 600);
+  button40(A);
+  button40(A);
 
+}
+
+void eovement(String key) {
+  String n;
+  int o = 0;
+  for (int a = 0; a < key.length(); a++) {
+    if(key[a] != '0' && key[a] != 'e' && key[a] != 'u' && key[a] != 'd' && key[a] != 'l' && key[a] != 'r') {
+      n = n + key[a];
+    }
+    if ( key[a] == '0') {
+      o = o + 1;
+    } 
+  }
+  int wait = n.toInt();
+  for (int r = 0; r < o; r++) {
+    wait = wait * 10;
+  }
+  Serial.println(wait);
+  if(key[1] == 'r') {
+    button40(easyRight, wait);
+  }else if(key[1] == 'l') {
+    button40(easyLeft, wait);
+  }else if(key[1] == 'u') {
+    button40(up, wait);
+  }else if(key[1] == 'd') {
+    button40(down, wait);
+  }
+}
+
+void movement(String key) {
+  String n;
+  int o = 0;
+  for (int a = 0; a < key.length(); a++) {
+    if(key[a] != '0' && key[a] != 'm' && key[a] != 'u' && key[a] != 'd' && key[a] != 'l' && key[a] != 'r') {
+      n = n + key[a];
+    }
+    if ( key[a] == '0') {
+      o = o + 1;
+    } 
+  }
+  int wait = n.toInt();
+  for (int r = 0; r < o; r++) {
+    wait = wait * 10;
+  }
+  Serial.println(wait);
+  if(key[1] == 'r') {
+    button40(mediumRight, wait);
+  }else if(key[1] == 'l') {
+    button40(mediumLeft, wait);
+  }else if(key[1] == 'u') {
+    button40(up, wait);
+  }else if(key[1] == 'd') {
+    button40(down, wait);
+  }
+}
+
+void hovement(String key) {
+  String n;
+  int o = 0;
+  for (int a = 0; a < key.length(); a++) {
+    if(key[a] != '0' && key[a] != 'h' && key[a] != 'u' && key[a] != 'd' && key[a] != 'l' && key[a] != 'r') {
+      n = n + key[a];
+    }
+    if ( key[a] == '0') {
+      o = o + 1;
+    } 
+  }
+  int wait = n.toInt();
+  for (int r = 0; r < o; r++) {
+    wait = wait * 10;
+  }
+  Serial.println(wait);
+  if(key[1] == 'r') {
+    button40(hardRight, wait);
+  }else if(key[1] == 'l') {
+    button40(hardLeft, wait);
+  }else if(key[1] == 'u') {
+    button40(up, wait);
+  }else if(key[1] == 'd') {
+    button40(down, wait);
+  }
 }
 
 void back() {
@@ -564,6 +706,28 @@ void hardBreak() {
   button40(B);
   button40(B);
 }
+
+void low() {
+  digitalWrite(start, LOW);
+  digitalWrite(up, LOW);
+  digitalWrite(down, LOW);
+  digitalWrite(hardLeft, LOW);
+  digitalWrite(mediumLeft, LOW);
+  digitalWrite(easyLeft, LOW);
+  digitalWrite(hardRight, LOW);
+  digitalWrite(mediumRight, LOW);
+  digitalWrite(easyRight, LOW);
+  digitalWrite(A, LOW);
+  digitalWrite(Y, LOW);
+  digitalWrite(Z, LOW);
+  digitalWrite(L, LOW);
+  digitalWrite(R, LOW);
+  digitalWrite(cUp, LOW);
+  digitalWrite(cDown, LOW);
+  digitalWrite(cLeft, LOW);
+  digitalWrite(cRight, LOW);
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(start, OUTPUT);
@@ -584,71 +748,84 @@ void setup() {
   pinMode(cDown, OUTPUT);
   pinMode(cLeft, OUTPUT);
   pinMode(cRight, OUTPUT);
-  pinMode(50, OUTPUT);
-  digitalWrite(50, HIGH);
-   reset(); 
- }
+  infinite();
+}
 
 void loop() {
 }
 
 void serialEvent() {
-    if (Serial.available() > 0) {
-      String key = Serial.readString();
-      Serial.println(key);
-      if (key == "wake") {
-        button40(A);
-        button40(A);
-      } else if (key == "reset") {
-        reset();
-      } else if (key == "test") { 
-        button40(X);
-      }else if (key == "menu") {
-        button40(start);
-      } else if (key == "back") {
-        backOut();
-      } else if (key == "a") {
-        button40(A);
-      } else if (key == "b") {
-        button40(B);
-      } else if (key == "y") {
-        button40(Y);
-      } else if (key == "xy") {
-        jumpHeight('2');
-      } else if (key == "cDown") {
-        button40(cDown);
-      } else if (key == "cUp") {
-        button40(cUp);
-      } else if (key == "cLeft") {
-        button40(cLeft);
-      } else if (key == "cRight") {
-        button40(cRight);
-      } else if (key == "u") {
-        button40(up);
-      } else if (key == "d") {
-        button40(down);
-      } else if (key == "d400") {
-        button40(down, 400);
-      } else if (key == "l400") {
-        button40(mediumLeft, 400);
-      } else if (key == "r400") {
-        button40(mediumRight, 400);
-      } else if (key == "u400") {
-        button40(up, 400);
-      } else if (key == "1l") {
-        button40(easyLeft, 1000);
-      } else if (key == "2l") {
-        button40(mediumLeft, 1000);
-      } else if (key == "3l") {
-        button40(hardLeft, 1000);
-      } else if (key == "1r") { 
-        button40(easyRight, 1000);
-      } else if (key == "2r") {
-        button40(mediumRight, 1000);
-      } else if (key == "3r") { 
-        button40(hardRight, 1000);
-      } else {
-        smash(key);
-      }
-    } 
+  if (Serial.available() > 0) {
+    String key = Serial.readString();
+    if (key == "w"){
+      button40(A);
+      button40(A);
+    } else if (key == "reset") {
+      reset();
+      Serial.println("reset");
+    } else if (key == "test" || key == "i") {
+      infinite();
+    } else if (key == "menu" || key == "start") {
+      button40(start);
+    } else if (key == "back") {
+      backOut();
+    } else if (key == "a") {
+      button40(A);
+    } else if (key == "b") {
+      button40(B);
+      Serial.println('b');
+    } else if (key == "x") {
+      button40(X);
+    } else if (key == "y") {
+      button40(Y);
+    } else if (key == "xy") {
+      jumpHeight('2');
+    } else if (key == "z") {
+      button40(Z);
+    } else if (key == "L") {
+      button40(L);
+    } else if (key == "R") {
+      button40(R);
+    } else if (key == "cDown") {
+      button40(cDown);
+    } else if (key == "cUp") {
+      button40(cUp);
+    } else if (key == "cLeft") {
+      button40(cLeft);
+    } else if (key == "cRight") {
+      button40(cRight);
+    } else if (key == "u") {
+      button40(up);
+    } else if (key == "d") {
+      button40(down);
+    } else if (key == "1l") {
+      button40(easyLeft);
+    } else if (key == "2l") {
+      button40(mediumLeft);
+    } else if (key == "3l") {
+      button40(hardLeft);
+    } else if (key == "1r") {
+      button40(easyRight);
+    } else if (key == "2r") {
+      button40(mediumRight);
+    } else if (key == "3r") {
+      button40(hardRight);
+    } else if (key == "d400") {
+      button40(down, 400);
+    } else if (key == "l400") {
+      button40(hardLeft, 400);
+    } else if (key == "r400") {
+      button40(hardRight, 400);
+    } else if (key == "u400") {
+      button40(up, 400);
+    } else if (key[0] == 'e') {
+      eovement(key);
+    } else if (key[0] == 'm') {
+      movement(key);
+    } else if (key[0] == 'h') {
+      hovement(key);
+    } else {
+      smash(key);
+    }
+  }
 }
