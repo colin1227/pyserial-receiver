@@ -83,6 +83,7 @@ void fullHop(int drift = false) {
 }
 void banana() {
   digitalWrite(down, HIGH);
+  delay(25);
   digitalWrite(B, HIGH);
   delay(600);
   digitalWrite(down, LOW);
@@ -95,44 +96,44 @@ void infinite() {
   button40(hardRight, 865);
   delay(300);
   banana();
-  for(int w = 0; w < 50;w++) {
-   infiniteJump(Y, hardLeft, 100);
+  for(int w = 0; w < 5;w++) {
+   infiniteJump(Y, hardLeft, 50);
    delay(120);
    button40(Z);
-   infiniteJump(down, A, 100);
-   delay(300);
+   button40v2(down, A, 25);
+   delay(425);
    downBReverseL();
-   delay(700);
-   infiniteJump(Y, hardRight, 100);
-   delay(60);
+   delay(600);
+   infiniteJump(Y, hardRight, 50);
+   delay(120);
    button40(Z);
-   infiniteJump(down, A, 100);
-   delay(300);
+   button40v2(down, A, 25);
+   delay(425);
    downBReverseR();
-   delay(650);  
+   delay(600);  
   }
 }
 
 void downBReverseL() {
-  digitalWrite(mediumLeft, HIGH);
-  delay(50);
-  digitalWrite(mediumLeft, LOW);
   digitalWrite(down, HIGH);
-  delay(75);
+  delay(80);
   digitalWrite(B, HIGH);
   delay(50);
+  digitalWrite(hardLeft, HIGH);
+  delay(50);
+  digitalWrite(hardLeft, LOW);
   digitalWrite(down, LOW);
   digitalWrite(B, LOW);
 }
 
 void downBReverseR() {
-  digitalWrite(mediumRight, HIGH);
-  delay(50);
-  digitalWrite(mediumRight, LOW);
   digitalWrite(down, HIGH);
-  delay(75);
+  delay(80);
   digitalWrite(B, HIGH);
   delay(50);
+  digitalWrite(hardRight, HIGH);
+  delay(50);
+  digitalWrite(hardRight, LOW);
   digitalWrite(down, LOW);
   digitalWrite(B, LOW);
 }
