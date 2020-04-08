@@ -3,24 +3,24 @@ const int easyLeft = 5;
 const int easyRight = 6;
 const int mediumRight = 7;
 
-const int start = 22; // a
-const int L = 24;     // a
-const int Z = 26;     // a
-const int B = 28;     // a
-const int X = 30;     // a
-const int A = 32;  // a
-const int Y = 34;  // a
-const int cDown = 36;  // a
-const int cUp = 38;    // a
-const int hardRight = 40;  // a
-const int R = 42;    // a
-const int hardLeft = 44;   // a
-const int down = 46; // a
+const int start = 22;
+const int L = 24;
+const int Z = 26;
+const int B = 28;
+const int X = 34;
+const int A = 32;
+const int Y = 30;
+const int cDown = 36;
+const int cUp = 38;
+const int hardRight = 40;
+const int R = 42;
+const int hardLeft = 44;
+const int down = 46;
 // 48;
-const int up = 49; //a
-const int cLeft = 50;   // a
+const int up = 49;
+const int cLeft = 50;
 // 51;
-const int cRight = 52; // a
+const int cRight = 52;
 
 void button40(int direct, int wait = 40) {
   digitalWrite(direct, HIGH);
@@ -44,43 +44,7 @@ void infiniteJump(int j, int d, int wait = 40) {
   digitalWrite(j, LOW);
   digitalWrite(d, LOW);
 }
-void downThrow() {
-  digitalWrite(down, HIGH);
-  digitalWrite(Z, HIGH);
-  delay(40);
-  digitalWrite(Z, LOW);
-  digitalWrite(down, LOW);
-  delay(40);
-  digitalWrite(down, HIGH);
-  delay(40);
-  digitalWrite(down, LOW);
 
-}
-
-
-
-void fullHop(int drift = false) {
-  digitalWrite(Y, HIGH);
-  if (drift) {
-    digitalWrite(drift, HIGH);
-    delay(25);
-    digitalWrite(drift, LOW);
-  } else {
-    delay(25);
-  }
-
-  if (drift) {
-    digitalWrite(drift, HIGH);
-    delay(195);
-    button40(Z);
-    digitalWrite(drift, LOW);
-    delay(160);
-  } else {
-    delay(345);
-  }
-  digitalWrite(Y, LOW);
-  downThrow();
-}
 void banana() {
   digitalWrite(down, HIGH);
   delay(25);
